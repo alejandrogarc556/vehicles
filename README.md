@@ -32,6 +32,22 @@ gradlew.bat bootRun
 
 The API starts on `http://localhost:8082`.
 
+In a second terminal, start the Angular frontend:
+
+```powershell
+cd testias-front
+npm install
+npm start
+```
+
+The frontend starts on the Angular development server, normally `http://localhost:4200`, and proxies `/api` requests to the backend at `http://localhost:8082`.
+
+Recommended startup order:
+
+1. Start PostgreSQL with Docker Compose.
+2. Start the backend and wait for Flyway to finish creating/updating the schema.
+3. Start the Angular frontend.
+
 Flyway creates the schema and inserts sample vehicles on startup. Data is stored in the `postgres_data` Docker volume and survives backend restarts.
 
 Initial catalog data uses COP prices:
