@@ -1,0 +1,242 @@
+:host {
+    display: block;
+}
+.page-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 32px 20px 64px;
+}
+.hero {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: end;
+    margin-bottom: 28px;
+}
+.hero h1 {
+    max-width: 620px;
+    margin: 8px 0;
+    font-size: clamp(2.2rem, 5vw, 4.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.06em;
+}
+.intro {
+    max-width: 580px;
+    color: #637083;
+    font-size: 1.1rem;
+}
+.eyebrow {
+    margin: 0;
+    color: #5367ed;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+.system-badge,
+.result-count {
+    color: #5367ed;
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.panel {
+    background: #fff;
+    border: 1px solid #e6eaf0;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 12px 35px #1725540a;
+}
+.catalog-panel {
+    margin-bottom: 22px;
+}
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+h2 {
+    margin: 5px 0 0;
+    font-size: 1.6rem;
+}
+h3 {
+    margin: 12px 0 4px;
+    font-size: 1.1rem;
+}
+.filter-bar,
+.pagination {
+    display: flex;
+    align-items: end;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.filter-bar label {
+    flex: 1;
+    min-width: 220px;
+}
+label {
+    display: grid;
+    gap: 7px;
+    color: #344054;
+    font-weight: 700;
+    font-size: 0.84rem;
+}
+input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d4dae4;
+    border-radius: 9px;
+    padding: 11px 12px;
+    color: #172033;
+    background: #fbfcfe;
+    font: inherit;
+}
+input:focus {
+    outline: 3px solid #5367ed33;
+    border-color: #5367ed;
+}
+button {
+    border: 0;
+    border-radius: 9px;
+    padding: 11px 15px;
+    background: #172554;
+    color: white;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+button:hover:not(:disabled) {
+    background: #5367ed;
+}
+button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+button.secondary {
+    background: #eef1f6;
+    color: #26334b;
+}
+.vehicle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+    gap: 14px;
+    margin: 22px 0;
+}
+.vehicle-card {
+    border: 1px solid #e6eaf0;
+    border-radius: 14px;
+    padding: 17px;
+    display: flex;
+    flex-direction: column;
+    min-height: 175px;
+}
+.vehicle-card.reserved {
+    background: #fafafa;
+}
+.vehicle-card button {
+    margin-top: auto;
+    width: 100%;
+}
+.vehicle-card-top,
+.pagination {
+    justify-content: space-between;
+}
+.vehicle-id {
+    color: #637083;
+    font-size: 0.76rem;
+    font-weight: 800;
+}
+.availability {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 4px 8px;
+    background: #fff0f0;
+    color: #b42318;
+    font-size: 0.7rem;
+    font-weight: 900;
+}
+.availability.available {
+    background: #e8f7ef;
+    color: #087443;
+}
+.vehicle-meta {
+    color: #637083;
+    margin: 0 0 14px;
+}
+.pagination {
+    align-items: center;
+    justify-content: center;
+    color: #637083;
+    font-size: 0.9rem;
+}
+.status,
+.empty {
+    color: #637083;
+    padding: 24px 0;
+    text-align: center;
+}
+.two-column {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+.two-column form {
+    display: grid;
+    gap: 13px;
+    margin-top: 20px;
+}
+.message {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    padding: 12px 14px;
+    border-radius: 10px;
+}
+.message button {
+    margin-left: auto;
+    padding: 7px 10px;
+    font-size: 0.8rem;
+}
+.message.error {
+    background: #fff1f1;
+    color: #9b1c1c;
+}
+.message.result {
+    background: #e8f7ef;
+    color: #087443;
+}
+.message.result.rejected {
+    background: #fff8e8;
+    color: #9a6700;
+}
+.field-error {
+    color: #b42318;
+    font-size: 0.76rem;
+    margin-top: -7px;
+}
+.lookup-result {
+    margin-top: 20px;
+    border-top: 1px solid #e6eaf0;
+    padding-top: 18px;
+}
+.lookup-result p {
+    margin: 7px 0;
+    color: #637083;
+}
+@media (max-width: 760px) {
+    .hero,
+    .two-column {
+        display: block;
+    }
+    .system-badge {
+        display: inline-block;
+        margin-top: 18px;
+    }
+    .panel {
+        margin-top: 22px;
+    }
+}

@@ -1,0 +1,61 @@
+<main class="page-shell">
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Vehicle reservations</p>
+      <h1>Choose a vehicle with confidence.</h1>
+      <p class="intro">Browse the catalog, reserve an available vehicle, or retrieve a reservation by reference.</p>
+    </div>
+    <span class="system-badge">Backend state is authoritative</span>
+  </header>
+
+  <section class="panel catalog-panel" aria-labelledby="catalog-title">
+    <div class="section-heading"><div><p class="eyebrow">Catalog</p><h2 id="catalog-title">Available vehicles</h2></div><span class="result-count">{{ totalElements() }} vehicles</span></div>
+    <form class="filter-bar" (submit)="$event.preventDefault(); applyFilter()">
+      <label>Brand filter<input [value]="brand()" (input)="brand.set($any($event.target).value)" placeholder="Toyota" maxlength="100" /></label>
+      <button type="submit">Apply filter</button><button type="button" class="secondary" (click)="clearFilter()">Clear</button>
+    </form>
+    @if (catalogLoading()) { <p class="status" role="status">Loading vehicles…</p> }
+    @if (catalogError()) { <div class="message error" role="alert"><span>{{ catalogError() }}</span><button type="button" (click)="retryCatalog()">Retry</button></div> }
+    @if (!catalogLoading() && !catalogError() && vehicles().length === 0) { <p class="empty">No vehicles match the current filter.</p> }
+    <div class="vehicle-grid">
+      @for (vehicle of vehicles(); track vehicle.id) {
+        <article class="vehicle-card" [class.reserved]="vehicle.availability === 'RESERVED'">
+          <div class="vehicle-card-top"><span class="vehicle-id">{{ vehicle.id }}</span><span class="availability" [class.available]="vehicle.availability === 'AVAILABLE'">{{ vehicle.availability }}</span></div>
+          <h3>{{ vehicle.brand }} {{ vehicle.model }}</h3><p class="vehicle-meta">{{ vehicle.year }} · {{ vehicle.price | currency:'COP':'symbol':'1.0-0' }}</p>
+          <button type="button" (click)="selectVehicle(vehicle)" [disabled]="vehicle.availability !== 'AVAILABLE'">Select vehicle</button>
+        </article>
+      }
+    </div>
+    <div class="pagination" aria-label="Catalog pagination">
+      <button type="button" class="secondary" (click)="previousPage()" [disabled]="page() === 0 || catalogLoading()">Previous</button>
+      <span>Page {{ totalPages() === 0 ? 0 : page() + 1 }} of {{ totalPages() }}</span>
+      <button type="button" class="secondary" (click)="nextPage()" [disabled]="page() + 1 >= totalPages() || catalogLoading()">Next</button>
+    </div>
+  </section>
+  <div class="two-column">
+    <section class="panel" id="reservation-form" aria-labelledby="reservation-title">
+      <p class="eyebrow">New reservation</p><h2 id="reservation-title">Reserve a vehicle</h2>
+      <form [formGroup]="reservationForm" (ngSubmit)="submitReservation()" novalidate>
+        <label>Reference ID<input formControlName="referenceId" maxlength="50" placeholder="REF-001" /></label>
+        @if (reservationForm.controls.referenceId.touched && reservationForm.controls.referenceId.invalid) { <small class="field-error">Reference ID is required and must be at most 50 characters.</small> }
+        <label>Buyer ID<input formControlName="buyerId" maxlength="50" placeholder="BUY-001" /></label>
+        @if (reservationForm.controls.buyerId.touched && reservationForm.controls.buyerId.invalid) { <small class="field-error">Buyer ID is required and must be at most 50 characters.</small> }
+        <label>Vehicle ID<input formControlName="vehicleId" maxlength="50" placeholder="Select a vehicle above" /></label>
+        @if (reservationForm.controls.vehicleId.touched && reservationForm.controls.vehicleId.invalid) { <small class="field-error">Select or enter a vehicle ID.</small> }
+        <button type="submit" [disabled]="reservationLoading()">{{ reservationLoading() ? 'Submitting…' : 'Submit reservation' }}</button>
+      </form>
+      @if (reservationError()) { <div class="message error" role="alert"><span>{{ reservationError() }}</span><button type="button" (click)="retryReservation()">Retry</button></div> }
+      @if (reservationResult(); as result) { <div class="message result" [class.rejected]="result.status === 'REJECTED'" role="status"><strong>{{ result.status }}</strong><span>{{ result.vehicle?.brand }} {{ result.vehicle?.model }} · {{ result.buyerId }}</span>@if (result.reason) { <span>{{ result.reason }}</span> }</div> }
+    </section>
+
+    <section class="panel" aria-labelledby="lookup-title">
+      <p class="eyebrow">Reservation lookup</p><h2 id="lookup-title">Find a reservation</h2>
+      <form [formGroup]="lookupForm" (ngSubmit)="lookupReservation()" novalidate>
+        <label>Reference ID<input formControlName="referenceId" maxlength="50" placeholder="REF-001" /></label>
+        <button type="submit" [disabled]="lookupLoading()">{{ lookupLoading() ? 'Searching…' : 'Search reservation' }}</button>
+      </form>
+      @if (lookupError()) { <div class="message error" role="alert"><span>{{ lookupError() }}</span><button type="button" (click)="retryLookup()">Retry</button></div> }
+      @if (lookupResult(); as result) { <div class="lookup-result"><span class="availability" [class.available]="result.status === 'CONFIRMED'">{{ result.status }}</span><h3>{{ result.vehicle?.brand }} {{ result.vehicle?.model }}</h3><p>Vehicle: {{ result.vehicle?.id }}</p><p>Buyer: {{ result.buyerId }}</p>@if (result.reason) { <p>Reason: {{ result.reason }}</p> }</div> }
+    </section>
+  </div>
+</main>
